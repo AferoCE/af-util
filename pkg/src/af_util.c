@@ -17,6 +17,7 @@
 #include <sys/wait.h>
 
 #include "af_log.h"
+#include "af_util.h"
 
 #define CMD_BUF_SIZE 256
 
@@ -55,5 +56,57 @@ int af_util_system(const char *format, ...)
         return rc;
     }
     return 0;
+}
+
+
+/* af_util_file_exists
+ *     Check to see if the file exists.
+ *
+ * return
+ *  1 - file exists
+ *  0 - file does NOT exist
+ */
+int8_t af_util_file_exists(const char *filename)
+{
+    if (filename != NULL) {
+        if (access(filename, R_OK ) != -1 ) {
+            // file exists
+            return (1);
+        }
+    }
+    return (0);
+}
+
+
+/* af_util_read_file
+ *
+ * read n size of data from the given file
+ *
+ * output
+ * buf   - contains the data read from the file
+ *
+ * return
+ * number of bytes read.  On error, returns zero.
+ */
+uint32_t af_util_read_file(const char *fname, char *buf, size_t  n)
+{
+    FILE  *fp = NULL;
+    uint32_t  nread = 0;
+
+    if (buf == NULL) {
+        AFLOG_ERR("af_util_read_file:: invalid input buf");
+        return (nread);
+    }
+
+    fp = fopen(fname, "r");
+    if (fp) {
+        nread = fread(buf, 1, n, fp);
+    }
+    else {
+        AFLOG_ERR("af_util_read_file:: Unable to open the file (%s)", ((fname==NULL) ? "--":fname));
+    }
+
+    fclose (fp);
+    return (nread);
 }
 
