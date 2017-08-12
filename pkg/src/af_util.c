@@ -101,12 +101,12 @@ uint32_t af_util_read_file(const char *fname, char *buf, size_t  n)
     fp = fopen(fname, "r");
     if (fp) {
         nread = fread(buf, 1, n, fp);
+        fclose (fp);
     }
     else {
         AFLOG_ERR("af_util_read_file:: Unable to open the file (%s)", ((fname==NULL) ? "--":fname));
     }
 
-    fclose (fp);
     return (nread);
 }
 
