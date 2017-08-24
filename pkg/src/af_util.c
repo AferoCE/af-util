@@ -110,3 +110,21 @@ uint32_t af_util_read_file(const char *fname, char *buf, size_t  n)
     return (nread);
 }
 
+char *af_util_buffer_to_hex(char *dest, size_t dest_len, const uint8_t *source, size_t source_len) {
+    static const char HEX[] = "0123456789abcdef";
+
+    size_t needed = source_len * 2 + 1;
+    if (dest_len < needed) {
+        AFLOG_ERR("af_util_buffer_to_hex: insufficient space (got %zi, need %zi)", dest_len, needed);
+        dest[0] = 0;
+        return dest;
+    }
+
+    int i;
+    for (i = 0; i < source_len; i++) {
+        dest[i * 2 + 0] = HEX[source[i] >> 4];
+        dest[i * 2 + 1] = HEX[source[i] & 0x0f];
+    }
+    dest[i * 2] = 0;
+    return dest;
+}
