@@ -128,3 +128,28 @@ char *af_util_buffer_to_hex(char *dest, size_t dest_len, const uint8_t *source, 
     dest[i * 2] = 0;
     return dest;
 }
+
+static uint8_t UNHEX[] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0, 0, 0,
+    0, 10, 11, 12, 13, 14, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 10, 11, 12, 13, 14, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
+size_t af_util_hex_to_buffer(uint8_t *dest, size_t dest_len, const char *source, size_t source_len) {
+    size_t needed = source_len / 2;
+    if (dest_len < needed) {
+        AFLOG_ERR("af_util_hex_to_buffer: insufficient space (got %zi, need %zi)", dest_len, needed);
+        return 0;
+    }
+
+    int i;
+    for (i = 0; i < source_len / 2; i++) {
+        dest[i] = (UNHEX[source[i * 2] & 0x7f] << 4) + UNHEX[source[i * 2 + 1] & 0x7f];
+    }
+    return needed;
+}
