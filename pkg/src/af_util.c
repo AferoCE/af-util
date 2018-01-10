@@ -22,6 +22,8 @@
 
 #define CMD_BUF_SIZE 256
 
+extern const char REVISION[];
+extern const char BUILD_DATE[];
 
 /* af_util_system
  *
@@ -36,6 +38,13 @@ int af_util_system(const char *format, ...)
     va_list args;
     int nwritten, rc;
     char buf[CMD_BUF_SIZE];
+    static short s_executed = 0;
+
+    if (!s_executed)
+    {
+        AFLOG_INFO("start_af_util:revision=%s,build_date=%s", REVISION, BUILD_DATE);
+        s_executed++;
+    }
 
     va_start(args,format);
     nwritten = vsnprintf(buf, sizeof(buf), format, args);
@@ -278,4 +287,3 @@ int af_util_parse_key_value_pair_file(char *path, af_key_value_pair_t *pairs, in
     fclose(f);
     return 0;
 }
-
