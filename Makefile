@@ -32,6 +32,7 @@ define Package/af-util/install
 
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/include/af_log.h $(STAGING_DIR)/usr/include
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/include/af_util.h $(STAGING_DIR)/usr/include
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/include/af_mempool.h $(STAGING_DIR)/usr/include
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libaf_util.so* $(STAGING_DIR)/usr/lib
 endef
 
