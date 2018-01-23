@@ -19,11 +19,9 @@
 
 #include "af_log.h"
 #include "af_util.h"
+#include "build_info.h"
 
 #define CMD_BUF_SIZE 256
-
-extern const char REVISION[];
-extern const char BUILD_DATE[];
 
 /* af_util_system
  *
