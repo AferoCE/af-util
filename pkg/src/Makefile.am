@@ -3,16 +3,15 @@ lib_LTLIBRARIES = libaf_util.la
 include_HEADERS = af_log.h af_util.h af_mempool.h
 
 if BUILD_TARGET_DEBUG
-AF_UTIL_BUILD_TYPE = -DBUILD_TARGET_DEBUG
+CFLAGS_BUILD_TYPE = -DBUILD_TARGET_DEBUG
 else
-AF_UTIL_BUILD_TYPE = -DBUILD_TARGET_RELEASE
+CFLAGS_BUILD_TYPE = -DBUILD_TARGET_RELEASE
 endif
 
 # util library
 LIBPATH=$(CURDIR)/.libs
-AM_CPPFLAGS = -Os $(AF_UTIL_BUILD_TYPE) -Wall
 libaf_util_la_LDFLAGS = -module -Wall -ggdb3 -std=gnu99 -shared -fPIC -soname, libaf_util.so.0
-libaf_util_la_CFLAGS = -Wall -std=gnu99 -ggdb3
+libaf_util_la_CFLAGS = -Wall -std=gnu99 $(CFLAGS_BUILD_TYPE)
 libaf_util_la_SOURCES = log_buffer.c af_util.c af_mempool.c
 
 .PHONY : build_info.h
