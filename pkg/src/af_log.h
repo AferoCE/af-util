@@ -22,12 +22,28 @@ extern uint32_t g_debugLevel;
 #define LOG_DEBUG3    3
 #define LOG_DEBUG4    4
 
+#ifdef CHECK_FORMAT
+#include <stdio.h>
+
+#define AFLOG_INFO printf
+#define AFLOG_NOTICE printf
+#define AFLOG_WARNING printf
+#define AFLOG_ERR printf
+#define AFLOG_CRIT printf
+#define AFLOG_DEBUG1 printf
+#define AFLOG_DEBUG2 printf
+#define AFLOG_DEBUG3 printf
+#define AFLOG_DEBUG4 printf
+
+#else // CHECK_FORMAT
+
 #define AFLOG_INFO(_fmt, ...) syslog(LOG_INFO,"I "_fmt,##__VA_ARGS__)
 #define AFLOG_NOTICE(_fmt, ...) syslog(LOG_NOTICE,"N "_fmt, ##__VA_ARGS__)
 #define AFLOG_WARNING(_fmt, ...) syslog(LOG_WARNING,"W "_fmt, ##__VA_ARGS__)
 #define AFLOG_ERR(_fmt, ...) syslog(LOG_ERR,"E "_fmt,##__VA_ARGS__)
 #define AFLOG_CRIT(_fmt, ...) syslog(LOG_CRIT,"C "_fmt,##__VA_ARGS__)
 #define AFLOG_DEBUG1(_fmt, ...) if (g_debugLevel>=LOG_DEBUG1) syslog(LOG_DEBUG,"1 "_fmt,##__VA_ARGS__)
+
 #ifdef BUILD_TARGET_RELEASE
 #define AFLOG_DEBUG4(_fmt, ...)
 #define AFLOG_DEBUG3(_fmt, ...)
@@ -36,8 +52,9 @@ extern uint32_t g_debugLevel;
 #define AFLOG_DEBUG4(_fmt, ...) if (g_debugLevel>=LOG_DEBUG4) syslog(LOG_DEBUG,"4 "_fmt,##__VA_ARGS__)
 #define AFLOG_DEBUG3(_fmt, ...) if (g_debugLevel>=LOG_DEBUG3) syslog(LOG_DEBUG,"3 "_fmt,##__VA_ARGS__)
 #define AFLOG_DEBUG2(_fmt, ...) if (g_debugLevel>=LOG_DEBUG2) syslog(LOG_DEBUG,"2 "_fmt,##__VA_ARGS__)
-#endif
+#endif // BUILD_TARGET_RELEASE
 
+#endif // CHECK_FORMAT
 
 #define AFLOG_DEBUG_ENABLED()  (g_debugLevel >= LOG_DEBUG1)
 
